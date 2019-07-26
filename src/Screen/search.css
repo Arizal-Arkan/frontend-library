@@ -13,6 +13,7 @@ form {
     transform: translateX(-50%);
     font-size: 15pt;
     outline: none;
+    margin-top: 25px;
     overflow: hidden;
   }
   

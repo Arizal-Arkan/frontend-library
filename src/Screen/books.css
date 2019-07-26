@@ -5,12 +5,12 @@
   
   .add {
     padding: 12px 30px;
-    background-color: #f4cf5d;
+    background-color: #0a0a0a;
     border: 0;
     border-radius: 8px;
     cursor: pointer;
     font-size: 12pt;
-    color: white;
+    color: rgb(238, 231, 231);
     outline: none;
     float: right;
     margin-right: 220px;
@@ -19,7 +19,7 @@
   }
   
   .add:active {
-    background-color: #c79e21;
+    background-color: #726e62;
   }
   
   .list-item {

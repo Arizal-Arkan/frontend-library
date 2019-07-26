@@ -1,21 +1,16 @@
-import React, { Component } from 'react'
+import React from 'react'
+import { Link } from 'react-router-dom'
 
-export default class Nav extends Component {
-  render () {
-    return (
-      <div
-        style={{
-          boxShadow: '5px 1px 7px silver',
-          width: '100%',
-          padding: '23px',
-          paddingLeft: '50px',
-          margin: '20px',
-          marginTop: '1px',
-          marginLeft: '1px',
-          fontSize: '35px',
-          fontWeight: 'bold',
-          fontFamily: 'Arial'
-        }}p>BOOKS</div>
-    )
-  }
+function Nav () {
+  return (
+    <div id='header' style={{ backgroundColor: 'black', fontStyle: 'Time New Roman' }}>
+      <span><Link to='/book' style={{ textDecoration: 'none', color: 'white' }}>LIBRARY</Link> </span>
+      <div style={{ float: 'right' }}>
+        <span style={{ padding: '20px' }}><Link to='/book' style={{ textDecoration: 'none', color: 'white', fontSize: '15pt' }}>Pinjam</Link></span>
+        <span style={{ padding: '20px' }}><Link to='/login' style={{ textDecoration: 'none', color: 'white', fontSize: '15pt' }}>Login</Link></span>
+      </div>
+    </div>
+  )
 }
+
+export default Nav

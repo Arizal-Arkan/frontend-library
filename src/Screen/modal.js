@@ -1,80 +1,106 @@
-import React, { useState } from 'react'
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { postBook } from '../Publics/action/book'
+import { getCategory } from '../Publics/action/category'
 
-const Modal = (props) => {
-  const [texts, setText] = useState(props.dataAdded ? '' : props.dataState.Data.find(item => item.bookid === props.match.params.bookid))
-  const [data, setData] = useState({})
-  console.log(props)
-  const showHideClassName = props.show ? 'modal display-block' : 'modal display-none'
-  let action = props.dataAdded ? add : edit
-  let dataFind = []
-  let dataIndex = ''
-  if (action === edit) {
-    dataFind = props.dataState.Data.find(item => item.bookid === props.match.params.bookid)
-    dataIndex = props.dataState.Data.indexOf(dataFind)
+class Modal extends Component {
+  constructor(props) {
+    super(props)
+    this.state = { category: [] }
   }
-  function getData (evt) {
-    setText({ nme: evt.target.value })
+  componentDidMount = async () => {
+    await this.props.dispatch(getCategory())
+    this.setState({ category: this.props.category })
   }
-  function add () {
-    setData(data.Description = document.getElementById('description').value, data.title = document.getElementById('title').value, data.image_url = document.getElementById('image_url').value)
-    autoID()
-    document.getElementById('description').value = ''
-    document.getElementById('title').value = ''
-    document.getElementById('image_url').value = ''
-    setData(data.created_at = new Date(), data.updated_at = new Date())
-    props.dataAdded(data)
-    props.handleClose()
-    setData({})
+add = () => {
+  this.props.dispatch(postBook({
+      name: document.getElementById('name').value,
+      image_url: document.getElementById('image_url').value,
+      writer: document.getElementById('writer').value,
+      description: document.getElementById('description').value,
+      location: document.getElementById('location').value,
+      category: document.getElementById('category').value
   }
-  function edit () {
-    setData(data.image_url = document.getElementById('image_url').value, data.Description = document.getElementById('description').value, data.title = document.getElementById('title').value)
-    let bookid = props.match.params.bookid
-    setData(data.bookid = bookid, data.created_at = dataFind.created_at, data.updated_at = new Date())
-    props.dataEdited(dataIndex, data)
-    props.handleClose()
-    setData({})
-  }
-  function autoID () {
-    console.log(props.dataState.Data[props.dataState.Data.length - 1].bookid)
-    setData(data.bookid = (Number(props.dataState.Data[props.dataState.Data.length - 1].bookid) + 1).toString())
-    console.log(data.id)
-  }
+  ))
+  this.props.handleClose()
+}
+  render(){
+    const category = this.state.category.categoryList
   return (
-    <div className={showHideClassName}>
+    <div className ={this.props.show ? "modal display-block" : "modal display-none"}>
       <section className='modal-main'>
-        <button onClick={props.handleClose} className={'close'}>X</button>
-        <p>{action === edit ? `Edit Data` : `Add Data`}</p>
+        <button onClick={this.props.handleClose} className={'close'}>X</button>
+        <p>{`Add Book`}</p>
         <div>
           <div className='inputGroup'>
             <div className='label'>
               <p>Url Image</p>
             </div>
             <div className='input'>
-              <input type='text' placeholder='Url Image ...' id={'image_url'} name='image_url' onChange={getData} value={texts.image_url} required />
+              <input type='text' placeholder='Url Image ...' id={'image_url'} name='image_url' required />
             </div>
           </div>
           <div className='inputGroup'>
             <div className='label'>
-              <p>Title</p>
+              <p>Name</p>
             </div>
             <div className='input'>
-              <input type='text' placeholder='Title ...' id={'title'} name='title' onChange={getData} value={texts.title} required />
+              <input type='text' placeholder='Name ...' id={'name'} name='name' required />
             </div>
           </div>
+          <div className='inputGroup'>
+            <div className='label'>
+              <p>Writer</p>
+            </div>
+            <div className='input'>
+              <input type='text' placeholder='Writer ...' id={'writer'} name='writer' required />
+            </div>
+          </div>
+          <div className='inputGroup'>
+            <div className='label'>
+              <p>Location</p>
+            </div>
+            <div className='input'>
+              <input type='text' placeholder='Location ...' id={'location'} name='location' required />
+            </div>
+          </div>
+          <div className='inputGroup'>
+                            <div className='label'>
+                                <p>Category</p>
+                            </div>
+                            <div className='input'>
+                                <select id={'category'} name='category'>
+                                    {!category ? "" : category.result.map((item, index) => {
+                                        return (
+                                            <option value={item.category_id}>{item.name}</option>
+                                        )
+                                    })}
+                                </select>
+                            </div>
+                        </div>
           <div className='inputGroup'>
             <div className='label'>
               <p>Description</p>
             </div>
             <div className='input'>
-              <textarea placeholder='Description' id={'description'} rows='5' name='description' onChange={getData} value={texts.Description} required />
+              <textarea placeholder='Description' id={'description'} rows='5' name='description' required />
             </div>
           </div>
           <div>
-            <button className='save' onClick={action}>Save</button>
+            <button className='save' onClick={this.add}>Save</button>
           </div>
         </div>
       </section>
     </div>
   )
 }
-export default Modal
+
+}
+const mapStateToProps = (state) => {
+  return {
+    book: state.book,
+    category: state.category
+  }
+}
+
+export default connect(mapStateToProps)(Modal)
