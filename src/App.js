@@ -66,7 +66,7 @@ export default class App extends Component {
       <div id="app">
         <Router>
           <Switch>
-            <Route exact path={'/book'}>
+            <Route exact path={'/'}>
               <Route component={Nav} />
               <Route render={() => <Search setSearch={this.setSearch} />} />
               <Route render={() => <Book showModal={this.showModal} setSearch={this.setSearch} search={this.state.search}/>}/>
