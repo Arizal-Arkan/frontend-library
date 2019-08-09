@@ -23,15 +23,15 @@ class Register extends Component {
           email: document.getElementById('email').value,
           password: document.getElementById('password').value
         }))
-      } else {
-        const modal = <ModalAlert show={true} pesan={' Password and confirm password must be the same'} error={true} link={'/register'} setModal={this.setModal} />
-        this.setState({ modal: modal })
-      }
-      if (this.props.user.userList.code === 'ER_DUP_ENTRY') {
+      if (this.props.user.userList.code === '') {
         const modal = <ModalAlert show={true} pesan={'Sorry the email is registered, please enter a new one'} error={true} link={'/register'} setModal={this.setModal} />
         this.setState({ modal: modal })
       } else {
-        const modal = <ModalAlert show={true} pesan={'Sign Up Successful'} success={true} link={'/'} setModal={this.setModal} />
+        const modal = <ModalAlert show={true} pesan={'Sign Up Successful'} success={true} link={'/login'} setModal={this.setModal} />
+        this.setState({ modal: modal })
+      } }
+      else {
+        const modal = <ModalAlert show={true} pesan={' Password and confirm password must be the same'} error={true} link={'/register'} setModal={this.setModal} />
         this.setState({ modal: modal })
       }
     }
@@ -42,7 +42,7 @@ class Register extends Component {
         {this.state.modal}
         <div style={{ marginBottom: 100, borderRadius: 5, width: 500, marginLeft: '50%', transform: 'translateX(-50%)', overflow: 'hidden', boxShadow: 'px 0px 1px #ddd', paddingBottom: 20 }}>
           <div style={{ padding: '10px 40px', width: '100%', boxSizing: 'border-box', boxShadow: '0px 0px 1px #ddd' }}>
-            <h2>Sign Up</h2>
+            <h2 textAlign= 'center'>Sign Up</h2>
           </div>
           <div style={{ padding: '10px 40px', width: '100%', overflow: 'hidden', boxSizing: 'border-box', boxShadow: '0px 0px 0.5px #ddd' }}>
             <form onSubmit={this.register}>

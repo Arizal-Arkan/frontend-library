@@ -1,42 +1,59 @@
 import axios from 'axios'
 
-export const getBook = () => {
+export const getBook = (keyword) => {
   return {
-    type: 'GET_BOOK',
-    payload: axios.get(`http://192.168.6.138:2001/book`,
-      {
-        headers: {
-          'authorization': 'allowedAccses'
-        }
-      })
+    type: 'GET_BOOKS',
+    payload: axios.get(`http://192.168.6.135:2001/book/?search=${keyword}`, null, {
+      headers: {
+        'authorization': 'Allow'
+      }
+    })
   }
 }
 
 export const postBook = (data) => {
   return {
     type: 'POST_BOOK',
-    payload: axios.post(`http://192.168.6.138:2001/book`, data)
+    payload: axios.post(`http://192.168.6.135:2001/book`, data, {
+      headers: {
+        'authorization': 'Allow'
+      }
+    })
   }
 }
 
 export const deleteBook = (id) => {
   return {
     type: 'DELETE_BOOK',
-    payload: axios.delete(`http://192.168.6.138:2001/book/${id}`)
+    payload: axios.delete(`http://192.168.6.135:2001/book/${id}`, null, {
+      headers: {
+        'authorization': 'Allow'
+      }
+    })
   }
 }
 
-export const editBook = (id) => {
+export const patchBook = (data,id,category) => {
   return {
-    type: 'EDIT_BOOK',
-    payload: axios.patch(`http://192.168.6.138:2001/book/${id}`)
+    type: 'PATCH_BOOK',
+    payload: axios.patch(`http://192.168.6.135:2001/book/${id}`, {...data,category:category}, {
+      headers: {
+        'authorization': 'Allow'
+      }
+    })
   }
 }
 
 export const getBookById = (id) => {
   console.log(id)
   return {
-    type: 'GET_BOOK_ID',
-    payload: axios.get(`http://192.168.6.138:2001/book/${id}`)
+    type: 'GET_BOOKS_ID',
+    payload: axios.get(`http://192.168.6.135:2001/book/${id}`, null, {
+      headers: {
+        'authorization': 'Allow'
+      }
+    })
   }
 }
+
+

@@ -7,6 +7,26 @@ const initialState = {
 
 const borrow = (state = initialState, action) => {
   switch (action.type) {
+    case 'GET_BORROWS_PENDING':
+      return {
+        ...state,
+        isLoading: true,
+        isFulfilled: false,
+        isRejected: false
+      }
+    case 'GET_BORROWS_REJECTED':
+      return {
+        ...state,
+        isLoading: false,
+        isRejected: true
+      }
+    case 'GET_BORROWS_FULFILLED':
+      return {
+        ...state,
+        isLoading: false,
+        isFulfilled: true,
+        borrowList: action.payload.data
+      }
     case 'POST_BORROW_PENDING':
       return {
         ...state,
@@ -25,47 +45,50 @@ const borrow = (state = initialState, action) => {
         ...state,
         isLoading: false,
         isFulfilled: true,
-        borrowList: [state.bookList, action.payload.data[0]]
+        borrowList: action.payload.data
       }
     case 'GET_BORROW_PENDING':
       return {
         ...state,
         isLoading: true,
-        isFulfilled: false,
-        isRejected: false
+        isRejected: false,
+        isFulfilled: false
       }
     case 'GET_BORROW_REJECTED':
       return {
         ...state,
         isLoading: false,
-        isRejected: true
+        isRejected: true,
       }
     case 'GET_BORROW_FULFILLED':
       return {
         ...state,
         isLoading: false,
         isFulfilled: true,
-        borrowList: action.payload.data.result
+        borrowList: action.payload.data
       }
-    case 'PATCH_BOOK_PENDING':
+    case 'PATCH_BORROW_PENDING':
       return {
         ...state,
         isLoading: true,
         isFulfilled: false,
         isRejected: false
       }
-    case 'PATCH_BOOK_REJECTED':
+    case 'PATCH_BORROW_REJECTED':
       return {
         ...state,
         isLoading: false,
         isRejected: true
       }
-    case 'PATCH_BOOK_FULFILLED':
+    case 'PATCH_BORROW_FULFILLED':
+      if(action.payload.data.result.returned_at !== null) {
+        const find = state.borrowList.result.find(item => Number(item.id) === Number(action.payload.data.result[0].id))
+        state.borrowList.result[state.borrowList.result.indexOf(find)] = action.payload.data.result[0]
+      }
       return {
         ...state,
         isLoading: false,
-        isFulfilled: true,
-        bookList: [state.borrowList, action.payload.data[0]]
+        isFulfilled: true
       }
 
     default:

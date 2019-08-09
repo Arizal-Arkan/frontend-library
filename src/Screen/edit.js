@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { postBook } from '../Publics/action/book'
+import { patchBook } from '../Publics/action/book'
 import { getCategory } from '../Publics/action/category'
 import { getBookById } from '../Publics/action/book'
 
@@ -29,7 +29,7 @@ class Modal extends Component {
     }
     update = () => {
         this.props.dispatch(
-            postBook(
+            patchBook(
                 {
                     name: document.getElementById('name').value,
                     image_url: document.getElementById('image_url').value,

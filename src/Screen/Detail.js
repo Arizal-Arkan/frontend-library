@@ -3,25 +3,35 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import '../Screen/Detail.css'
 import { deleteBook, getBookById } from '../Publics/action/book'
-import Borrow from './borrow'
-import Return from './return'
+import ModalAlert from '../Screen/modalAlert'
+import Activity from './activity'
 
-// function convert (date) {
-//   let data = Date.parse(date)
-//   let newDate = new Date(data)
-//   let day = newDate.getDate()
-//   let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-//   let month = months[newDate.getMonth()]
-//   var year = newDate.getFullYear()
-//   return `${day} ${month} ${year}`
-// }
+
+function convert (date) {
+  let data = Date.parse(date)
+  let newDate = new Date(data)
+  let day = newDate.getDate()
+  let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+  let month = months[newDate.getMonth()]
+  var year = newDate.getFullYear()
+  return `${day} ${month} ${year}`
+}
 
 class Detail extends Component{
-
-  state = {
-      book: []
+  constructor(props){
+    super(props)
+    this.state = {
+      loading: true,
+      book: [],
+      modal: ''
+    }
+  }
+  setModal = () => {
+    this.setState({ modal: '' })
   }
   componentDidMount = async () => {
+    console.log(this.props.match.params.bookid);
+    
     const bookid = this.props.match.params.bookid
     await this.props.dispatch(getBookById(bookid))
     this.setState({
@@ -29,40 +39,50 @@ class Detail extends Component{
     })
   } 
 
-  delete = async () => {
-		await this.props.dispatch(deleteBook(this.props.match.params.bookid));
-	}
-
+  deleteData = () => {
+    this.props.dispatch(deleteBook(this.props.match.params.bookid))
+    window.location='/book'
+  }
+  pinjam = () => {
+    if (localStorage.id) {
+      this.props.showModalPinjam()
+    } else {
+      const modal = <ModalAlert show={true} pesan={"Login Dulu Dong"} error={true} link={"/login"} setModal={this.setModal} />
+      this.setState({ modal: modal })
+    }
+  }
 
 render() {
+  
   const {book} = this.state;
   let list = book.bookList;
   console.log(list);
+  if(book.isFulfilled){
   return (
     <div>  
-    
+
         {list &&
-          list.length > 0 &&
-          list.map(item =>  {
+          list.result.length > 0 &&
+          list.result.map(item =>  {
   return (
     <div className='book-detail'>
       <div>
-        <ul>
-          <li><Link to='/book' className='back'>BACK</Link></li>
-          <li className='button' onClick={this.props.showModal}>Edit</li>
-          <li className='button'> <Link to={'/book'} onClick={this.delete.bind(this)}>Delete</Link></li>
-        </ul>
-        <img className={'imageHeader'} src={this.state.detailData.image_url} 
-        alt={this.state.detailData.image_url} />
+          <ul>
+            <li><Link to="/book" className="back">Back</Link></li>
+            {localStorage.role === "admin" ? <li className="button" onClick={this.props.showModal}>Edit</li> : ""}
+            {localStorage.role === "admin" ? <li className="button" onClick={this.deleteData}>Delete</li> : ""}
+          </ul>
+        <img className={'imageHeader'} src={item.image_url} 
+        alt={item.image_url} />
       </div>
       <div className='content'>
-        <img className={'imageBook'} src={this.state.detailData.image_url} 
-        alt={this.state.detailData.title} />
-        <p>{item.StatusBorrow === 1 ?  <Return id={item.idBook}/>: <Borrow/> }</p>
-        <p className='title'>{this.state.detailData.name}</p>
-        <p>By: {this.state.detailData.writer}</p>
-        {/* <p className='date'>{convert(this.state.detailData.update)}</p> */}
-        <p className='text'>{this.state.detailData.description}</p>
+        <img className={'imageBook'} src={item.image_url} 
+        alt={item.title} />
+        <button className={"btn-pinjam"} onClick={this.pinjam}>Pinjam </button>
+        <p className='title'>{item.name}</p>
+        <p>By: {item.writer}</p>
+        <p className='date'>{convert(item.update)}</p>
+        <p className='text'>{item.description}</p>
       </div>
 
     </div>
@@ -72,6 +92,9 @@ render() {
         }
     </div>
   )
+} else {
+  return <div style={{ textAlign: "center", marginTop: 500 }}><Activity/></div>
+}
 }
 }
 

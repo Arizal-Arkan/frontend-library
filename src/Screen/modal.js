@@ -12,17 +12,23 @@ class Modal extends Component {
     await this.props.dispatch(getCategory())
     this.setState({ category: this.props.category })
   }
-add = () => {
-  this.props.dispatch(postBook({
-      name: document.getElementById('name').value,
-      image_url: document.getElementById('image_url').value,
-      writer: document.getElementById('writer').value,
-      description: document.getElementById('description').value,
-      location: document.getElementById('location').value,
-      category: document.getElementById('category').value
-  }
-  ))
-  this.props.handleClose()
+add = (e) => {
+  e.preventDefault()
+  const formdata = new FormData()
+  formdata.append('writer', document.getElementById('writer').value)
+  formdata.append('name', document.getElementById('name').value)
+  formdata.append('image_url', document.getElementById('image_url').files[0])
+  formdata.append('description', document.getElementById('description').value)
+  formdata.append('location', document.getElementById('location').value)
+  formdata.append('category', document.getElementById('category').value)
+  this.props.dispatch(postBook(formdata))
+      document.getElementById('name').value = ''
+      document.getElementById('image_url').value = ''
+      document.getElementById('writer').value = '' 
+      document.getElementById('description').value = ''
+      document.getElementById('location').value = ''
+      document.getElementById('category').value = ''
+      this.props.handleClose()
 }
   render(){
     const category = this.state.category.categoryList
@@ -30,14 +36,15 @@ add = () => {
     <div className ={this.props.show ? "modal display-block" : "modal display-none"}>
       <section className='modal-main'>
         <button onClick={this.props.handleClose} className={'close'}>X</button>
-        <p>{`Add Book`}</p>
+        {localStorage.id ? localStorage.role === 'member'  ? '': <p>{'Add Book'}</p>:<p>{'Donation Book'}</p>}
+        {localStorage.id ? localStorage.role === 'admin'  ? '': <p>{'Donation Book'}</p>:<p>{'Add Book'}</p>}
         <div>
           <div className='inputGroup'>
             <div className='label'>
               <p>Url Image</p>
             </div>
             <div className='input'>
-              <input type='text' placeholder='Url Image ...' id={'image_url'} name='image_url' required />
+              <input type='file' placeholder='Url Image ...' id={'image_url'} name='image_url' required />
             </div>
           </div>
           <div className='inputGroup'>

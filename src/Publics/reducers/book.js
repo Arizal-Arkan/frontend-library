@@ -1,5 +1,6 @@
 const initialState = {
   bookList: [],
+  bookEdit: [],
   isLoading: false,
   isFulfilled: false,
   isRejected: false
@@ -7,21 +8,21 @@ const initialState = {
 
 const book = (state = initialState, action) => {
   switch (action.type) {
-    case 'GET_BOOK_PENDING':
+    case 'GET_BOOKS_PENDING':
       return {
         ...state,
         isLoading: true,
         isFulfilled: false,
         isRejected: false
       }
-    case 'GET_BOOK_REJECTED':
+    case 'GET_BOOKS_REJECTED':
       return {
         ...state,
         isLoading: false,
         isFulfilled: false,
         isRejected: true
       }
-    case 'GET_BOOK_FULFILLED':
+    case 'GET_BOOKS_FULFILLED':
       return {
         ...state,
         isLoading: false,
@@ -29,21 +30,22 @@ const book = (state = initialState, action) => {
         isRejected: false,
         bookList: action.payload.data
       }
-    case 'GET_BOOK_ID_PENDING':
+    case 'GET_BOOKS_ID_PENDING':
       return {
         ...state,
         isLoading: true,
         isFulfilled: false,
         isRejected: false
       }
-    case 'GET_BOOK_ID_REJECTED':
+    case 'GET_BOOKS_ID_REJECTED':
       return {
         ...state,
         isLoading: false,
         isFulfilled: false,
         isRejected: true
       }
-    case 'GET_BOOK_ID_FULFILLED':
+    case 'GET_BOOKS_ID_FULFILLED':
+      console.log("drtdgdgdffg",action.payload.data)
       return {
         ...state,
         isLoading: false,
@@ -51,28 +53,47 @@ const book = (state = initialState, action) => {
         isRejected: false,
         bookList: action.payload.data
       }
-    case 'EDIT_BOOK_PENDING':
+      case 'POST_BOOK_PENDING':
       return {
         ...state,
         isLoading: true,
         isFulfilled: false,
         isRejected: false
       }
-    case 'EDIT_BOOK_REJECTED':
+      case 'POST_BOOK_REJECTED':
       return {
         ...state,
         isLoading: false,
-        isFulfilled: false,
         isRejected: true
       }
-    case 'EDIT_BOOK_FULFILLED':
+      case 'POST_BOOK_FULFILLED':
+        state.bookList.result.push(action.payload.data)
       return {
         ...state,
         isLoading: false,
         isFulfilled: true,
-        isRejected: false,
-        bookList: action.payload.data
       }
+    case 'PATCH_BOOK_PENDING':
+      return {
+        ...state,
+        isLoading: true,
+        isFulfilled: false,
+        isRejected: false
+      }
+    case 'PATCH_BOOK_REJECTED':
+      return {
+        ...state,
+        isLoading: false,
+        isRejected: true
+      }
+      case 'PATCH_BOOK_FULFILLED':
+        const find = state.bookList.result.find(item => Number(item.id) === Number(action.payload.data.result.id))
+        state.bookList.result[state.bookList.result.indexOf(find)] = action.payload.data.result
+        return {
+            ...state,
+            isLoading: false,
+            isFulfilled: true,
+        }
     default:
       return state
   }

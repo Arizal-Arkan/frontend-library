@@ -18,23 +18,22 @@ class login extends Component {
   }
 
   login = async (e) => {
-    e.preventDefault()  
-      await this.props.dispatch(getByEmail({
-          email: document.getElementById('email').value,
-          password: document.getElementById('password').value
-      }))
-    if (this.props.user.userList === 'Worng Password') {
-      const modal = <ModalAlert show={true} pesan={'Worng Password'} error={true} link={'/login'} setModal={this.setModal} />
-      this.setState({ modal: modal })
-    } else if (this.props.user.userList === 'Email Not Found') {
-      const modal = <ModalAlert show={true} pesan={'Email Not Found'} error={true} link={'/login'} setModal={this.setModal} />
-      this.setState({ modal: modal })
+    e.preventDefault()
+    await this.props.dispatch(getByEmail({
+        email: document.getElementById('email').value,
+        password: document.getElementById('password').value
+    }))
+    if (this.props.user.userList === 'Password Worng') {
+        const modal = <ModalAlert show={true} pesan={"Password Worng"} error={true} link={"/login"} setModal={this.setModal} />
+        this.setState({ modal: modal })
+    } else if (this.props.user.userList === "Email Not Found") {
+        const modal = <ModalAlert show={true} pesan={"Email Not Found"} error={true} link={"/login"} setModal={this.setModal} />
+        this.setState({ modal: modal })
     } else {
-      const modal = <ModalAlert show={true} pesan={'Login Success'} success={true} link={'/'} setModal={this.setModal} />
-      this.setState({ modal: modal })
-    } 
-    
-  }
+        const modal = <ModalAlert show={true} pesan={"Login Success"} success={true} link={"/book"} setModal={this.setModal}/>
+        this.setState({ modal: modal })
+    }
+}
   
   render(){
       return(
@@ -42,7 +41,7 @@ class login extends Component {
             {this.state.modal}
               <div style={{ borderRadius: 5, width: 500, marginLeft: '50%', transform: 'translateX(-50%)', overflow: 'hidden', boxShadow: 'px 0px 1px #ddd', paddingBottom: 20 }}>
                  <div style={{ padding: '10px 40px', width: "100%", boxSizing: 'border-box', boxShadow: '0px 0px 1px #ddd' }}>
-                    <h2>Login</h2>
+                    <h2 textAlign= 'center'>Login</h2>
           </div>
           <div style={{ padding: '10px 40px', width: '100%', overflow: 'hidden', boxSizing: 'border-box', boxShadow: '0px 0px 0.5px #ddd' }}>
             <form onSubmit={this.login}>
