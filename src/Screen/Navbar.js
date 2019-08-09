@@ -18,7 +18,7 @@ class Nav extends Component {
         this.props.dispatch(getToken(localStorage.getItem('token'), localStorage.getItem('id')))
     }
     destroy = () => {
-        const modal = <ModalAlert show={true} pesan={'Logout Sukses'} success={true} link={'/book'} setModal={this.setModal} />
+        const modal = <ModalAlert show={true} pesan={'Logout Sukses'} success={true} link={'/'} setModal={this.setModal} />
         this.setState({ modal: modal })
         localStorage.clear()
     }
@@ -38,7 +38,7 @@ class Nav extends Component {
             <div>
             {this.state.modal}
                 <div id='header' style={{ backgroundColor: 'black' }}>
-                    <span><Link to='/book' style={{ textDecoration: 'none', color: 'white' }}>LIBRARY</Link></span>
+                    <span><Link to='/' style={{ textDecoration: 'none', color: 'white' }}>LIBRARY</Link></span>
                     <div style={{ float: 'right' }}>
                         {/* <span style={{}}><Link to='/pinjam' style={{ textDecoration: 'none', color: 'black' ,fontSize:'15pt',float:'left' }}>Pinjam</Link></span> */}
                         {localStorage.id ? dropdown : <span style={{ padding: '20px' }}><Link to='/login' style={{ textDecoration: 'none', color: 'white', fontSize: '15pt' }}>Login</Link></span>}

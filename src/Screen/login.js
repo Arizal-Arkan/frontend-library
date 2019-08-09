@@ -30,7 +30,7 @@ class login extends Component {
         const modal = <ModalAlert show={true} pesan={"Email Not Found"} error={true} link={"/login"} setModal={this.setModal} />
         this.setState({ modal: modal })
     } else {
-        const modal = <ModalAlert show={true} pesan={"Login Success"} success={true} link={"/book"} setModal={this.setModal}/>
+        const modal = <ModalAlert show={true} pesan={"Login Success"} success={true} link={"/"} setModal={this.setModal}/>
         this.setState({ modal: modal })
     }
 }

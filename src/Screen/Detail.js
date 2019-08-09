@@ -41,7 +41,7 @@ class Detail extends Component{
 
   deleteData = () => {
     this.props.dispatch(deleteBook(this.props.match.params.bookid))
-    window.location='/book'
+    window.location='/'
   }
   pinjam = () => {
     if (localStorage.id) {
@@ -68,7 +68,7 @@ render() {
     <div className='book-detail'>
       <div>
           <ul>
-            <li><Link to="/book" className="back">Back</Link></li>
+            <li><Link to="/" className="back">Back</Link></li>
             {localStorage.role === "admin" ? <li className="button" onClick={this.props.showModal}>Edit</li> : ""}
             {localStorage.role === "admin" ? <li className="button" onClick={this.deleteData}>Delete</li> : ""}
           </ul>
