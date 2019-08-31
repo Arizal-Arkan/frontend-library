@@ -1,7 +1,7 @@
 <h1 align='center'>CRUD with ReactJs + Redux with Restfull API (NodeJs + Express)</h1>
 
 <div align="center">
-    <img width="250" src="https://miro.medium.com/max/365/1*d2zLEjERsrs1Rzk_95QU9A.png">      
+    <img width="250" src="https://hackernoon.com/hn-images/1*VeM-5lsAtrrJ4jXH96h5kg.png">      
 </div>
 
 <p align='center'>Simple Library (Lib App)</p>
